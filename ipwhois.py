@@ -76,7 +76,7 @@ def parse_whois(ipfile):
 
             (out, error) = pipe.communicate(input)
 
-            print('OUT: %s, ERR: %s'%(out, error))
+            print('OUT:\n %s, ERR:\n %s'%(out, error))
 
         except Exception, e:
             print(e)
