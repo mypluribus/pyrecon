@@ -44,6 +44,8 @@ def parse_pcap(pcap_file):
         with open(path, 'r') as f:
             pcap = dpkt.pcap.Reader(f)
 
+            uniq_ip = None
+
             for (ts, buf) in pcap:
                 try:
                     eth = dpkt.ethernet.Ethernet(buf)
@@ -58,10 +60,22 @@ def parse_pcap(pcap_file):
                         ##
                         ## <frag ID>:<src IP>:<dst IP>
                         ##
-                        print '%s:%s:%s'%(ip.id, ip_src, ip_dst) 
+                        #print '%s:%s:%s'%(ip.id, ip_src, ip_dst) 
+
+                        ##
+                        ## collect unique IP using a set
+                        ##
+                        if uniq_ip is None:
+                            uniq_ip = set({})
+
+                        uniq_ip.add(ip_src)
+                        uniq_ip.add(ip_src)
 
                 except Exception, e:
                     pass
+
+        for x in sorted(uniq_ip):
+            print('%s'%x)
 
     except Exception, e:
         pass
